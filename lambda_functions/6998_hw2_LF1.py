@@ -11,12 +11,13 @@ def lambda_handler(event, context):
 
     # validate event
     try:
-        bucket = event["Records"]["s3"]["bucket"]["name"]
-        photo = event["Records"]["s3"]["object"]["key"]
+        bucket = event["Records"][0]["s3"]["bucket"]["name"]
+        photo = event["Records"][0]["s3"]["object"]["key"]
     except Exception as e:
+        logger.error("Exception encountered when parsing event")
         return {
             'statusCode': 500,
-            'body': str(e)
+            'body': e
         }
 
     client = boto3.client("rekognition")
