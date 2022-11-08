@@ -21,11 +21,13 @@ def lambda_handler(event, context):
         }
 
     client = boto3.client("rekognition")
-    response = client.detect_labels(Image={'S3Object': {'Bucket': bucket, 'Name': photo}},
+    request = {'S3Object': {'Bucket': bucket, 'Name': photo}}
+    logger.info(request)
+    response = client.detect_labels(Image=request,
         MinConfidence=30,
         MaxLabels=5) 
-    labels=response['CustomLabels']
     logger.info(response)
+    labels=response['CustomLabels']
 
     return {
         'statusCode': 200,
