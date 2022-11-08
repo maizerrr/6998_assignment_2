@@ -1,4 +1,5 @@
 import json
+import uuid
 import logging
 import boto3
 from opensearchpy import OpenSearch, RequestsHttpConnection, AWSV4SignerAuth
@@ -13,9 +14,17 @@ logger.setLevel(logging.DEBUG)
 client = boto3.client('lexv2-runtime')
 
 def lambda_handler(event, context):
-    query = event["query"]
-    sessionId = event["sessionId"]
-    logger.info("Query '{}' passed to Lex".format(query))
+    # validate event
+    try:
+        query = event["queryParams"]["q"]
+        sessionId = uuid.uuid1()
+        logger.info("Query '{}' passed to Lex".format(query))
+    except Exception as e:
+        logger.error("Exception encountered when parsing event")
+        return {
+            'statusCode': 500,
+            'body': e
+        }
 
     # input disambiguation with Lex
     response = client.recognize_text(botId='6LO7VOU6I8',
