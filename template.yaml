@@ -11,3 +11,12 @@ Resources:
       Description: ''
       MemorySize: 128
       Timeout: 3
+  6998hw2LF2:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: 6998_hw2_LF2.lambda_handler
+      Runtime: python3.8
+      CodeUri: ./lambda_functions
+      Description: ''
+      MemorySize: 128
+      Timeout: 3
