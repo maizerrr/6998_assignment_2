@@ -14,10 +14,12 @@ logger.setLevel(logging.DEBUG)
 client = boto3.client('lexv2-runtime')
 
 def lambda_handler(event, context):
+    logger.info(event)
+
     # validate event
     try:
         query = event["queryParams"]["q"]
-        sessionId = uuid.uuid1()
+        sessionId = str(uuid.uuid1())
         logger.info("Query '{}' passed to Lex".format(query))
     except Exception as e:
         logger.error("Exception encountered when parsing event")
