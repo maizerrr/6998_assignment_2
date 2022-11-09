@@ -49,10 +49,10 @@ def lambda_handler(event, context):
     # cleanup query
     query = []
     for _, v in response.items():
-        if len(v["resolvedValues"]) > 0:
-            query.append(v["resolvedValues"][0])
-        else:
-            query.append(v["interpretedValue"])
+        if v is not None and len(v["value"]["resolvedValues"]) > 0:
+            query.append(v["value"]["resolvedValues"][0])
+        elif v is not None:
+            query.append(v["value"]["interpretedValue"])
 
     # search for corresponding photos
     credentials = boto3.Session().get_credentials()
