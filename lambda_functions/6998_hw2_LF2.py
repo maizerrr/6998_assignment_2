@@ -35,16 +35,24 @@ def lambda_handler(event, context):
                                      sessionId=sessionId,
                                      text=query)
     
-    _response = response.get("messages", [])
-    if _response:
-        response = _response[0]["content"]
+    
+    try:
+        response = response["interpretations"][0]["intent"]["slots"]
         logger.info("response from Lex:\n{}".format(response))
-    else:
+    except Exception as e:
         logger.error("Lex failed to parse user input.")
         return {
             'statusCode': 500,
             'body': "Lex failed to parse user input."
         }
+
+    # cleanup query
+    query = []
+    for _, v in response.items():
+        if len(v["resolvedValues"]) > 0:
+            query.append(v["resolvedValues"][0])
+        else:
+            query.append(v["interpretedValue"])
 
     # search for corresponding photos
     credentials = boto3.Session().get_credentials()
@@ -56,19 +64,22 @@ def lambda_handler(event, context):
         verify_cets = True,
         connection_class = RequestsHttpConnection
     )
-    query = {
-        'size': 5,
-        'query': {
-            'multi_match': {
-            'query': query,
-            'fields': ['labels']
+    response = []
+    for q in query:
+        _query = {
+            'size': 5,
+            'query': {
+                'multi_match': {
+                'query': q,
+                'fields': ['labels']
+                }
             }
         }
-    }
-    response = es.search(
-        body = query,
-        index = INDEX
-    )
+        _response = es.search(
+            body = _query,
+            index = INDEX
+        )
+        response = response + _response["hits"]["hits"]
     logger.info("Photos found by OpenSearch:\n{}".format(response))
 
     return {
