@@ -35,7 +35,7 @@ def lambda_handler(event, context):
     }
     client = boto3.client('s3')
     try:
-        response = client.head_object(Bucket=bucket, key=photo)
+        response = client.head_object(Bucket=bucket, Key=photo)
         logger.info("metadata retrieved from s3:\n{}".format(response))
         labels = response["x-amz-meta-customlabels"].split(',')
         document["labels"] = labels
