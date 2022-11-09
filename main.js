@@ -32,14 +32,7 @@ recognition.addEventListener("result", (e) => {
       p.innerText = "My Name is Cifar";
       texts.appendChild(p);
     }
-    if (text.includes("open my YouTube")) {
-      p = document.createElement("p");
-      p.classList.add("replay");
-      p.innerText = "opening youtube channel";
-      texts.appendChild(p);
-      console.log("opening youtube");
-      window.open("https://www.youtube.com/channel/UCdxaLo9ALJgXgOUDURRPGiQ");
-    }
+   
     p = document.createElement("p");
   }
 });
@@ -49,3 +42,24 @@ recognition.addEventListener("end", () => {
 });
 
 recognition.start();
+
+//fetch data
+var myHeaders = new Headers();
+myHeaders.append("2", "audio/L24");
+myHeaders.append("Content-Type", "application/json");
+
+var raw = JSON.stringify(9.9);
+
+var requestOptions = {
+  method: 'GET',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch("https://ookzp1iggd.execute-api.us-east-1.amazonaws.com/live/search?q="+ new URLSearchParams({
+  foo: 'value',bar: 2,}).toString(), requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
+
