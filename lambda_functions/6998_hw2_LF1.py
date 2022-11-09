@@ -25,6 +25,22 @@ def lambda_handler(event, context):
             'statusCode': 500,
             'body': e
         }
+    
+    # retrieve metadata
+    document = {
+        "objectKey": photo,
+        "bucket": bucket,
+        "createdTimestamp": t,
+        "labels": []
+    }
+    client = boto3.client('s3')
+    try:
+        response = client.head_object(Bucket=bucket, key=photo)
+        logger.info("metadata retrieved from s3:\n{}".format(response))
+        labels = response["x-amz-meta-customlabels"].split(',')
+        document["labels"] = labels
+    except Exception as e:
+        logger.error("failed to retrieve metadata from s3:\n{}".format(e))
 
     # image recognition
     client = boto3.client("rekognition")
@@ -37,12 +53,6 @@ def lambda_handler(event, context):
     labels=response['Labels']
 
     # cleanup and add to OpenSearch
-    document = {
-        "objectKey": photo,
-        "bucket": bucket,
-        "createdTimestamp": t,
-        "labels": []
-    }
     for label in labels:
         document["labels"].append(label["Name"])
     credentials = boto3.Session().get_credentials()

@@ -18,6 +18,7 @@ OpenSearch:
 
 API Gateway:
  - https://stackoverflow.com/questions/31329958/how-to-pass-a-querystring-or-route-parameter-to-aws-lambda-from-amazon-api-gatew
+ - https://docs.aws.amazon.com/apigateway/latest/developerguide/integrating-api-with-aws-services-s3.html
 
 b2photos:
  - https://bobbyhadz.com/blog/aws-s3-allow-public-read-access
