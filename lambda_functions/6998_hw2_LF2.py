@@ -82,7 +82,12 @@ def lambda_handler(event, context):
         response = response + _response["hits"]["hits"]
     logger.info("Photos found by OpenSearch:\n{}".format(response))
 
+    photoURL = []
+    for r in response:
+        url = "https://{}.s3.amazonaws.com/{}".format(r["_source"]["bucket"], r["_source"]["objectKey"])
+        photoURL.append(url)
+
     return {
         'statusCode': 200,
-        'body': None
+        'body': photoURL
     }

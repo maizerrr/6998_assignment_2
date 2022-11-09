@@ -16,5 +16,8 @@ OpenSearch:
  - https://docs.aws.amazon.com/opensearch-service/latest/developerguide/fgac.html#fgac-more-masters
  - https://opensearch.org/docs/1.2/opensearch/rest-api/search/
 
-API Gateway
+API Gateway:
  - https://stackoverflow.com/questions/31329958/how-to-pass-a-querystring-or-route-parameter-to-aws-lambda-from-amazon-api-gatew
+
+b2photos:
+ - https://bobbyhadz.com/blog/aws-s3-allow-public-read-access
