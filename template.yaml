@@ -49,6 +49,7 @@ Resources:
 
   LambdaFunction:
     Type: "AWS::Serverless::Function"
+    # Type: "AWS::Lambda::Function"
     DeletionPolicy: "Retain"
     Properties:
       Description: ""
@@ -70,6 +71,7 @@ Resources:
 
   LambdaFunction2:
     Type: "AWS::Serverless::Function"
+    # Type: "AWS::Lambda::Function"
     DeletionPolicy: "Retain"
     Properties:
       Description: ""
