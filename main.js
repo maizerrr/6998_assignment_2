@@ -6,7 +6,6 @@ while (texts == null || input ==null) {
   console.log("retrieving texts...")
 
 }
-
 const search_url = "https://ookzp1iggd.execute-api.us-east-1.amazonaws.com/live/search?q="
 const upload_url = "https://ookzp1iggd.execute-api.us-east-1.amazonaws.com/live/upload/"
 
@@ -47,10 +46,13 @@ function stop() {
 
 function search_album(query) {
   try {
+    var myHeaders = new Headers();
+    myHeaders.append("x-api-key", "BcsoccsCzM87cwZS6XaxQnS1Kil8J0x2woqCDKG6");
     query= query.toLowerCase();
     // RESTful request
     var requestOptions = {
       method: 'GET',
+      headers:myHeaders,
       redirect: 'follow'
     };
     fetch(search_url+query, requestOptions)
@@ -90,4 +92,79 @@ function addImages(images) {
     photo.src = image;
     img_wrapper.appendChild(photo);
   }
+}
+
+// upload images
+document.getElementById("uploadButton").onclick = () => {
+  let fileElement = document.getElementById('fileInput')
+  let fileName = document.getElementById("fileInput").value.split("\\").pop();
+  // check if user had selected a file
+  if (fileElement.files.length === 0) {
+    alert('please choose file(s)')
+    return
+  }
+
+  let files = Array.from(fileElement.files)
+  let formData = new FormData();
+  files.forEach(file => {
+    formData.append('file', file);
+  })
+
+var myHeaders = new Headers();
+myHeaders.append("labels", "gcp02");
+// gap02 is self defined label
+myHeaders.append("Content-Type", "image/jpeg");
+myHeaders.append("x-api-key", "BcsoccsCzM87cwZS6XaxQnS1Kil8J0x2woqCDKG6");
+
+
+let base64String = "";
+  
+function imageUploaded() {
+    var file = document.querySelector(
+        'input[type="file"]')['files'][0];
+  
+    var reader = new FileReader();
+      
+    reader.onload = function () {
+        base64String = reader.result.replace("data:", "")
+            .replace(/^.+,/, "");
+  
+        imageBase64Stringsep = base64String;
+        // alert(imageBase64Stringsep);
+        // console.log(base64String);
+    }
+    reader.readAsDataURL(file);
+}
+
+let file = imageUploaded()
+var requestOptions = {
+  mode: 'cors',
+  method: 'PUT',
+  headers: myHeaders,
+  body: file,
+  redirect: 'follow'
+};
+fetch("https://ookzp1iggd.execute-api.us-east-1.amazonaws.com/live/upload/"+fileName, requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => {
+    console.log('error', error);
+  });
+}
+
+// conver images to 64
+function getBase64(file) {
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function () {
+    console.log(reader.result);
+  };
+  reader.onerror = function (error) {
+    console.log('Error: ', error);
+  };
+}
+
+function displayString() {
+  console.log("Base64String about to be printed");
+  alert(base64String);
 }
