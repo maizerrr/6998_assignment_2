@@ -95,76 +95,74 @@ function addImages(images) {
 }
 
 // upload images
-document.getElementById("uploadButton").onclick = () => {
+document.getElementById("uploadButton").onclick = async function () {
   let fileElement = document.getElementById('fileInput')
   let fileName = document.getElementById("fileInput").value.split("\\").pop();
   // check if user had selected a file
   if (fileElement.files.length === 0) {
-    alert('please choose file(s)')
-    return
+    alert('please choose file(s)');
+    return;
   }
 
   let files = Array.from(fileElement.files)
-  let formData = new FormData();
-  files.forEach(file => {
-    formData.append('file', file);
-  })
+  // let formData = new FormData();
+  // files.forEach(file => {
+  //   formData.append('file', file);
+  // });
 
-var myHeaders = new Headers();
-myHeaders.append("labels", "gcp02");
-// gap02 is self defined label
-myHeaders.append("Content-Type", "image/jpeg");
-myHeaders.append("x-api-key", "BcsoccsCzM87cwZS6XaxQnS1Kil8J0x2woqCDKG6");
+  var myHeaders = new Headers();
+  myHeaders.append("labels", "gcp02");
+  // gap02 is self defined label
+  myHeaders.append("Content-Type", "image/jpeg");
+  myHeaders.append("x-api-key", "BcsoccsCzM87cwZS6XaxQnS1Kil8J0x2woqCDKG6");
 
-
-let base64String = "";
-  
-function imageUploaded() {
-    var file = document.querySelector(
-        'input[type="file"]')['files'][0];
-  
-    var reader = new FileReader();
-      
-    reader.onload = function () {
-        base64String = reader.result.replace("data:", "")
-            .replace(/^.+,/, "");
-  
-        imageBase64Stringsep = base64String;
-        // alert(imageBase64Stringsep);
-        // console.log(base64String);
-    }
+  const base64String = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
     reader.readAsDataURL(file);
-}
+    reader.onload = () => resolve(reader.result.replace("data:","").replace(/^.+,/, ""))
+    reader.onerror = error => reject(error)
+  });
 
-let file = imageUploaded()
-var requestOptions = {
-  mode: 'cors',
-  method: 'PUT',
-  headers: myHeaders,
-  body: file,
-  redirect: 'follow'
-};
-fetch("https://ookzp1iggd.execute-api.us-east-1.amazonaws.com/live/upload/"+fileName, requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => {
-    console.log('error', error);
+  var requestOptions = {
+    mode: 'cors',
+    method: 'PUT',
+    headers: myHeaders,
+    body: files[0],
+    redirect: 'follow'
+  };
+
+  console.log(requestOptions.body);
+  
+  fetch("https://ookzp1iggd.execute-api.us-east-1.amazonaws.com/live/upload/"+fileName, requestOptions)
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => {
+      console.log('error', error);
   });
 }
 
-// conver images to 64
-function getBase64(file) {
-  var reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = function () {
-    console.log(reader.result);
-  };
-  reader.onerror = function (error) {
-    console.log('Error: ', error);
-  };
-}
 
 function displayString() {
   console.log("Base64String about to be printed");
   alert(base64String);
+}
+
+function imageUploaded() {
+  var file = document.querySelector(
+      'input[type="file"]')['files'][0];
+  if (file === null) {
+    console.log(file);
+    return
+  }
+  var reader = new FileReader();
+  reader.onload = function () {
+      base64String = reader.result.replace("data:", "")
+          .replace(/^.+,/, "");
+
+      // imageBase64Stringsep = base64String;
+      // alert(imageBase64Stringsep);
+      // console.log(base64String);
+      return base64String;
+  }
+  reader.readAsDataURL(file);
 }
