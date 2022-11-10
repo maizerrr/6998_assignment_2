@@ -34,56 +34,6 @@ Resources:
           Event: "s3:ObjectCreated:*"
           Function: !GetAtt LambdaFunction.Arn
 
-  LambdaFunction:
-    Type: "AWS::Lambda::Function"
-    DeletionPolicy: "Retain"
-    Properties:
-      Description: ""
-      FunctionName: "w6998-hw2-LambdaStack-6998hw2LF1-pGnNxHUNaND6"
-      Handler: "6998_hw2_LF1.lambda_handler"
-      Architectures: 
-      - "x86_64"
-      CodeUri: ./lambda_functions
-      MemorySize: 128
-      Role: !GetAtt IAMRole3.Arn
-      Runtime: "python3.8"
-      Timeout: 10
-      TracingConfig: 
-        Mode: "PassThrough"
-      Layers: 
-      - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:pymysql_layer:2"
-      EphemeralStorage: 
-        Size: 512
-      Tags: 
-      - 
-        Key: "lambda:createdBy"
-        Value: "SAM"
-
-  LambdaFunction2:
-    Type: "AWS::Lambda::Function"
-    DeletionPolicy: "Retain"
-    Properties:
-      Description: ""
-      FunctionName: "w6998-hw2-LambdaStack-6998hw2LF2-tckgbixWnTic"
-      Handler: "6998_hw2_LF2.lambda_handler"
-      Architectures: 
-      - "x86_64"
-      CodeUri: ./lambda_functions
-      MemorySize: 128
-      Role: !GetAtt IAMRole2.Arn
-      Runtime: "python3.8"
-      Timeout: 10
-      TracingConfig: 
-        Mode: "PassThrough"
-      Layers: 
-      - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:pymysql_layer:2"
-      EphemeralStorage: 
-        Size: 512
-      Tags: 
-      - 
-        Key: "lambda:createdBy"
-        Value: "SAM"
-
   ApiGatewayRestApi:
     Type: "AWS::ApiGateway::RestApi"
     DeletionPolicy: "Retain"
@@ -96,45 +46,55 @@ Resources:
         Types: 
         - "REGIONAL"
 
-  IAMRole:
-    Type: "AWS::IAM::Role"
+  LambdaFunction:
+    Type: "AWS::Lambda::Function"
     DeletionPolicy: "Retain"
     Properties:
-      Path: "/"
-      RoleName: "6998_hw2_UploadPhoto_role"
-      AssumeRolePolicyDocument: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"apigateway.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
-      MaxSessionDuration: 3600
-      ManagedPolicyArns: 
-      - "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
-      - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-      Description: "Allows API Gateway to upload file to s3"
-
-  IAMRole2:
-    Type: "AWS::IAM::Role"
-    DeletionPolicy: "Retain"
-    Properties:
-      Path: "/"
-      RoleName: "w6998-hw2-LambdaStack-6998hw2LF2Role-18S3K1O0XDD41"
-      AssumeRolePolicyDocument: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
-      MaxSessionDuration: 3600
-      ManagedPolicyArns: 
-      - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-      - "arn:aws:iam::aws:policy/AmazonLexRunBotsOnly"
       Description: ""
+      FunctionName: "6998_hw2_LF1"
+      Handler: "6998_hw2_LF1.lambda_handler"
+      Architectures: 
+      - "x86_64"
+      CodeUri: ./lambda_functions
+      # Code: 
+      #   S3Bucket: "prod-iad-c1-djusa-tasks"
+      #   S3Key: !Sub "/snapshots/${AWS::AccountId}/6998_hw2_LF1-3209636a-f21e-41e7-8ffd-ada0f0c0c8aa"
+      #   S3ObjectVersion: "ON6hjYBcGX4Pk.JrNHhj3m3owlodTBPq"
+      MemorySize: 128
+      Role: !GetAtt IAMRole3.Arn
+      Runtime: "python3.8"
+      Timeout: 10
+      TracingConfig: 
+        Mode: "PassThrough"
+      Layers: 
+      - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:pymysql_layer:2"
+      EphemeralStorage: 
+        Size: 512
 
-  IAMRole3:
-    Type: "AWS::IAM::Role"
+  LambdaFunction2:
+    Type: "AWS::Lambda::Function"
     DeletionPolicy: "Retain"
     Properties:
-      Path: "/"
-      RoleName: "w6998-hw2-LambdaStack-6998hw2LF1Role-1PQYXO997MNPN"
-      AssumeRolePolicyDocument: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
-      MaxSessionDuration: 3600
-      ManagedPolicyArns: 
-      - "arn:aws:iam::aws:policy/AmazonRekognitionFullAccess"
-      - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-      - "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
       Description: ""
+      FunctionName: "6998_hw2_LF2"
+      Handler: "6998_hw2_LF2.lambda_handler"
+      Architectures: 
+      - "x86_64"
+      CodeUri: ./lambda_functions
+      # Code: 
+      #   S3Bucket: "prod-iad-c1-djusa-tasks"
+      #   S3Key: !Sub "/snapshots/${AWS::AccountId}/6998_hw2_LF2-a22fc531-7196-4b22-9467-b28823c279ec"
+      #   S3ObjectVersion: "Lenw4oEGybjx91Km4TXNQsd3APbzm554"
+      MemorySize: 128
+      Role: !GetAtt IAMRole.Arn
+      Runtime: "python3.8"
+      Timeout: 10
+      TracingConfig: 
+        Mode: "PassThrough"
+      Layers: 
+      - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:pymysql_layer:2"
+      EphemeralStorage: 
+        Size: 512
 
   OpenSearchServiceDomain:
     Type: "AWS::OpenSearchService::Domain"
@@ -143,16 +103,11 @@ Resources:
       DomainName: "photos"
       EngineVersion: "OpenSearch_1.3"
       ClusterConfig: 
-        ColdStorageOptions: 
-          Enabled: false
         DedicatedMasterEnabled: false
         InstanceCount: 1
         InstanceType: "t3.small.elasticsearch"
         ZoneAwarenessEnabled: false
         WarmEnabled: false
-      AccessPolicies: !Sub "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"*\"},\"Action\":\"es:*\",\"Resource\":\"arn:aws:es:${AWS::Region}:${AWS::AccountId}:domain/photos/*\"}]}"
-      SnapshotOptions: {}
-      snapshot_options: {}
       EncryptionAtRestOptions: 
         Enabled: true
         KmsKeyId: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/a549253c-67fb-44c9-b660-dc84015d141a"
@@ -175,7 +130,42 @@ Resources:
         EnforceHTTPS: true
         TLSSecurityPolicy: "Policy-Min-TLS-1-0-2019-07"
         CustomEndpointEnabled: false
-      AdvancedSecurityOptions: 
-        Enabled: true
-        InternalUserDatabaseEnabled: true
-        AnonymousAuthEnabled: false
+
+  IAMRole:
+    Type: "AWS::IAM::Role"
+    DeletionPolicy: "Retain"
+    Properties:
+      Path: "/service-role/"
+      RoleName: "6998_hw2_LF2-role-p4ss6v0p"
+      AssumeRolePolicyDocument: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
+      MaxSessionDuration: 3600
+      ManagedPolicyArns: 
+      - !Sub "arn:aws:iam::${AWS::AccountId}:policy/service-role/AWSLambdaBasicExecutionRole-77b5d18d-bca5-480a-95ca-4c8390f9499a"
+      - "arn:aws:iam::aws:policy/AmazonLexRunBotsOnly"
+
+  IAMRole2:
+    Type: "AWS::IAM::Role"
+    DeletionPolicy: "Retain"
+    Properties:
+      Path: "/"
+      RoleName: "6998_hw2_UploadPhoto_role"
+      AssumeRolePolicyDocument: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"apigateway.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
+      MaxSessionDuration: 3600
+      ManagedPolicyArns: 
+      - "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+      - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+      Description: "Allows API Gateway to upload file to s3"
+
+  IAMRole3:
+    Type: "AWS::IAM::Role"
+    DeletionPolicy: "Retain"
+    Properties:
+      Path: "/service-role/"
+      RoleName: "6998_hw2_LF1-role-bhk117th"
+      AssumeRolePolicyDocument: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
+      MaxSessionDuration: 3600
+      ManagedPolicyArns: 
+      - !Sub "arn:aws:iam::${AWS::AccountId}:policy/service-role/AWSLambdaBasicExecutionRole-8e4e6a7f-4e88-4b7b-b7d9-85c414498b08"
+      - "arn:aws:iam::aws:policy/AmazonRekognitionFullAccess"
+      - "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+
