@@ -1,14 +1,21 @@
-const texts = document.querySelector(".texts");
+let texts = document.getElementById("texts");
+while (texts == null) {
+  texts = document.getElementById("texts");
+  console.log("retrieving texts...")
+}
 
 window.SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
+
+console.log("after loading window.spechrecognition");
 
 const recognition = new SpeechRecognition();
 recognition.interimResults = true;
 
 let p = document.createElement("p");
-
+console.log("after setting p");
 recognition.addEventListener("result", (e) => {
+  console.log("entering result callback")
   texts.appendChild(p);
   const text = Array.from(e.results)
     .map((result) => result[0])
@@ -38,7 +45,10 @@ recognition.addEventListener("result", (e) => {
 });
 
 recognition.addEventListener("end", () => {
+  console.log("before recognition start");
   recognition.start();
 });
-
 recognition.start();
+
+
+
