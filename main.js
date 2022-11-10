@@ -42,24 +42,3 @@ recognition.addEventListener("end", () => {
 });
 
 recognition.start();
-
-//fetch data
-var myHeaders = new Headers();
-myHeaders.append("2", "audio/L24");
-myHeaders.append("Content-Type", "application/json");
-
-var raw = JSON.stringify(9.9);
-
-var requestOptions = {
-  method: 'GET',
-  headers: myHeaders,
-  body: raw,
-  redirect: 'follow'
-};
-
-fetch("https://ookzp1iggd.execute-api.us-east-1.amazonaws.com/live/search?q="+ new URLSearchParams({
-  foo: 'value',bar: 2,}).toString(), requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
-
