@@ -96,17 +96,6 @@ Resources:
         Types: 
         - "REGIONAL"
 
-  LexBot:
-    Type: "AWS::Lex::Bot"
-    DeletionPolicy: "Retain"
-    Properties:
-      Name: "6998_hw2_photos"
-      Description: "Parse and disambiguate search queries"
-      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/lexv2.amazonaws.com/AWSServiceRoleForLexV2Bots_T5QBLFE5YN"
-      DataPrivacy: 
-        childDirected: false
-      IdleSessionTTLInSeconds: 300
-
   IAMRole:
     Type: "AWS::IAM::Role"
     DeletionPolicy: "Retain"
