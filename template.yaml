@@ -1,22 +1,155 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Transform: 'AWS::Serverless-2016-10-31'
-Description: Lambda Functions from 6998 HW2.
+AWSTemplateFormatVersion: "2010-09-09"
+Metadata:
+  Generator: "former2"
+Description: ""
 Resources:
-  6998hw2LF1:
-    Type: 'AWS::Serverless::Function'
+  S3Bucket:
+    Type: "AWS::S3::Bucket"
+    DeletionPolicy: "Retain"
     Properties:
-      Handler: 6998_hw2_LF1.lambda_handler
-      Runtime: python3.8
-      CodeUri: ./lambda_functions
-      Description: ''
-      MemorySize: 128
-      Timeout: 10
-  6998hw2LF2:
-    Type: 'AWS::Serverless::Function'
+      BucketName: "6998-hw2-frontend"
+      VersioningConfiguration: 
+        Status: "Enabled"
+      WebsiteConfiguration: 
+        IndexDocument: "index.html"
+
+  S3Bucket2:
+    Type: "AWS::S3::Bucket"
+    DeletionPolicy: "Retain"
     Properties:
-      Handler: 6998_hw2_LF2.lambda_handler
-      Runtime: python3.8
-      CodeUri: ./lambda_functions
-      Description: ''
+      BucketName: "b2pohtos"
+      CorsConfiguration: 
+        CorsRules: 
+        - 
+          AllowedHeaders: 
+          - "Authorization"
+          - "Content-Length"
+          AllowedMethods: 
+          - "GET"
+          AllowedOrigins: 
+          - "*"
+      NotificationConfiguration: 
+        LambdaConfigurations: 
+        - 
+          Event: "s3:ObjectCreated:*"
+          Function: !GetAtt LambdaFunction.Arn
+
+  LambdaFunction:
+    Type: "AWS::Lambda::Function"
+    DeletionPolicy: "Retain"
+    Properties:
+      Description: ""
+      FunctionName: "w6998-hw2-LambdaStack-6998hw2LF1-pGnNxHUNaND6"
+      Handler: "6998_hw2_LF1.lambda_handler"
+      Architectures: 
+      - "x86_64"
+      Code: 
+        S3Bucket: "prod-iad-c1-djusa-tasks"
+        S3Key: !Sub "/snapshots/${AWS::AccountId}/w6998-hw2-LambdaStack-6998hw2LF1-pGnNxHUNaND6-a79093f7-b5e4-4caf-8e2d-8a7b58698241"
+        S3ObjectVersion: ".YV4HvK44Zpr959Smvfv04b17Z2Vr5lz"
       MemorySize: 128
+      Role: !GetAtt IAMRole3.Arn
+      Runtime: "python3.8"
       Timeout: 10
+      TracingConfig: 
+        Mode: "PassThrough"
+      Layers: 
+      - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:pymysql_layer:2"
+      EphemeralStorage: 
+        Size: 512
+      Tags: 
+      - 
+        Key: "lambda:createdBy"
+        Value: "SAM"
+
+  LambdaFunction2:
+    Type: "AWS::Lambda::Function"
+    DeletionPolicy: "Retain"
+    Properties:
+      Description: ""
+      FunctionName: "w6998-hw2-LambdaStack-6998hw2LF2-tckgbixWnTic"
+      Handler: "6998_hw2_LF2.lambda_handler"
+      Architectures: 
+      - "x86_64"
+      Code: 
+        S3Bucket: "prod-iad-c1-djusa-tasks"
+        S3Key: !Sub "/snapshots/${AWS::AccountId}/w6998-hw2-LambdaStack-6998hw2LF2-tckgbixWnTic-4a458cc6-9d63-4730-a603-467a49491604"
+        S3ObjectVersion: "_ugf2G367qZ5cgBSWtt32O_yBt563ez_"
+      MemorySize: 128
+      Role: !GetAtt IAMRole2.Arn
+      Runtime: "python3.8"
+      Timeout: 10
+      TracingConfig: 
+        Mode: "PassThrough"
+      Layers: 
+      - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:pymysql_layer:2"
+      EphemeralStorage: 
+        Size: 512
+      Tags: 
+      - 
+        Key: "lambda:createdBy"
+        Value: "SAM"
+
+  ApiGatewayRestApi:
+    Type: "AWS::ApiGateway::RestApi"
+    DeletionPolicy: "Retain"
+    Properties:
+      Name: "6998_hw2_api"
+      ApiKeySourceType: "HEADER"
+      BinaryMediaTypes: 
+      - "image/*"
+      EndpointConfiguration: 
+        Types: 
+        - "REGIONAL"
+
+  LexBot:
+    Type: "AWS::Lex::Bot"
+    DeletionPolicy: "Retain"
+    Properties:
+      Name: "6998_hw2_photos"
+      Description: "Parse and disambiguate search queries"
+      RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/lexv2.amazonaws.com/AWSServiceRoleForLexV2Bots_T5QBLFE5YN"
+      DataPrivacy: 
+        childDirected: false
+      IdleSessionTTLInSeconds: 300
+
+  IAMRole:
+    Type: "AWS::IAM::Role"
+    DeletionPolicy: "Retain"
+    Properties:
+      Path: "/"
+      RoleName: "6998_hw2_UploadPhoto_role"
+      AssumeRolePolicyDocument: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"apigateway.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
+      MaxSessionDuration: 3600
+      ManagedPolicyArns: 
+      - "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+      - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+      Description: "Allows API Gateway to upload file to s3"
+
+  IAMRole2:
+    Type: "AWS::IAM::Role"
+    DeletionPolicy: "Retain"
+    Properties:
+      Path: "/"
+      RoleName: "w6998-hw2-LambdaStack-6998hw2LF2Role-18S3K1O0XDD41"
+      AssumeRolePolicyDocument: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
+      MaxSessionDuration: 3600
+      ManagedPolicyArns: 
+      - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+      - "arn:aws:iam::aws:policy/AmazonLexRunBotsOnly"
+      Description: ""
+
+  IAMRole3:
+    Type: "AWS::IAM::Role"
+    DeletionPolicy: "Retain"
+    Properties:
+      Path: "/"
+      RoleName: "w6998-hw2-LambdaStack-6998hw2LF1Role-1PQYXO997MNPN"
+      AssumeRolePolicyDocument: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
+      MaxSessionDuration: 3600
+      ManagedPolicyArns: 
+      - "arn:aws:iam::aws:policy/AmazonRekognitionFullAccess"
+      - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+      - "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+      Description: ""
+
