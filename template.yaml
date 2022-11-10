@@ -54,8 +54,6 @@ Resources:
       Description: ""
       FunctionName: "6998_hw2_LF1"
       Handler: "6998_hw2_LF1.lambda_handler"
-      Architectures: 
-      - "x86_64"
       CodeUri: "./lambda_functions"
       # Code: 
       #   S3Bucket: "prod-iad-c1-djusa-tasks"
@@ -65,8 +63,6 @@ Resources:
       Role: !GetAtt IAMRole3.Arn
       Runtime: "python3.8"
       Timeout: 10
-      TracingConfig: 
-        Mode: "PassThrough"
       Layers: 
       - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:pymysql_layer:2"
       EphemeralStorage: 
@@ -79,8 +75,6 @@ Resources:
       Description: ""
       FunctionName: "6998_hw2_LF2"
       Handler: "6998_hw2_LF2.lambda_handler"
-      Architectures: 
-      - "x86_64"
       CodeUri: "./lambda_functions"
       # Code: 
       #   S3Bucket: "prod-iad-c1-djusa-tasks"
@@ -90,8 +84,6 @@ Resources:
       Role: !GetAtt IAMRole.Arn
       Runtime: "python3.8"
       Timeout: 10
-      TracingConfig: 
-        Mode: "PassThrough"
       Layers: 
       - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:pymysql_layer:2"
       EphemeralStorage: 
