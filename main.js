@@ -1,54 +1,93 @@
 let texts = document.getElementById("texts");
-while (texts == null) {
+let input = document.getElementById('searchbar')
+while (texts == null || input ==null) {
   texts = document.getElementById("texts");
+  input = document.getElementById("searchbar");
   console.log("retrieving texts...")
+
 }
+
+const search_url = "https://ookzp1iggd.execute-api.us-east-1.amazonaws.com/live/search?q="
+const upload_url = "https://ookzp1iggd.execute-api.us-east-1.amazonaws.com/live/upload/"
 
 window.SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
-console.log("after loading window.spechrecognition");
 
 const recognition = new SpeechRecognition();
 recognition.interimResults = true;
 
-let p = document.createElement("p");
-console.log("after setting p");
+
 recognition.addEventListener("result", (e) => {
-  console.log("entering result callback")
-  texts.appendChild(p);
+
+  // texts.appendChild(p);
   const text = Array.from(e.results)
     .map((result) => result[0])
     .map((result) => result.transcript)
     .join("");
 
-  p.innerText = text;
   if (e.results[0].isFinal) {
-    if (text.includes("how are you")) {
-      p = document.createElement("p");
-      p.classList.add("replay");
-      p.innerText = "I am fine";
-      texts.appendChild(p);
-    }
-    if (
-      text.includes("what's your name") ||
-      text.includes("what is your name")
-    ) {
-      p = document.createElement("p");
-      p.classList.add("replay");
-      p.innerText = "My Name is Cifar";
-      texts.appendChild(p);
-    }
-   
-    p = document.createElement("p");
+    input.value += text;
   }
 });
 
-recognition.addEventListener("end", () => {
-  console.log("before recognition start");
+function record() {
+  document.getElementById("btn1").style = "display: None";
+  document.getElementById("btn2").style = "display: block";
+  input.value = "";
   recognition.start();
+  
+}
+
+function stop() {
+  document.getElementById("btn1").style = "display: block";
+  document.getElementById("btn2").style = "display: None";
+  recognition.stop();
+}
+
+function search_album(query) {
+  try {
+    query= query.toLowerCase();
+    // RESTful request
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+    fetch(search_url+query, requestOptions)
+    .then(response => response.json())
+      .then(result => {
+        console.log(result);
+        console.log(result.body)
+        addImages(result.body);
+      })
+      .catch(error => console.log('error', error));
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+input.addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    search_album(input.value);
+  }
 });
-recognition.start();
 
-
-
+function addImages(images) {
+  var img_wrapper = document.getElementById("img_wrapper")
+  var photo = img_wrapper.lastElementChild;
+  while (photo) {
+    img_wrapper.removeChild(photo);
+    photo = img_wrapper.lastElementChild;
+  }
+  if (images.length === 0) {
+    var p = document.createElement("p");
+    p.innerText = "Nothing found";
+    img_wrapper.append(p);
+  }
+  for (var image of images) {
+    var photo = document.createElement("img");
+    photo.src = image;
+    img_wrapper.appendChild(photo);
+  }
+}
