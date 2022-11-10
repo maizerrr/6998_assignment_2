@@ -48,7 +48,7 @@ Resources:
         - "REGIONAL"
 
   LambdaFunction:
-    Type: "AWS::Lambda::Function"
+    Type: "AWS::Serverless::Function"
     DeletionPolicy: "Retain"
     Properties:
       Description: ""
@@ -73,7 +73,7 @@ Resources:
         Size: 512
 
   LambdaFunction2:
-    Type: "AWS::Lambda::Function"
+    Type: "AWS::Serverless::Function"
     DeletionPolicy: "Retain"
     Properties:
       Description: ""
