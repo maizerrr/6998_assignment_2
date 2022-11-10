@@ -43,10 +43,7 @@ Resources:
       Handler: "6998_hw2_LF1.lambda_handler"
       Architectures: 
       - "x86_64"
-      Code: 
-        S3Bucket: "prod-iad-c1-djusa-tasks"
-        S3Key: !Sub "/snapshots/${AWS::AccountId}/w6998-hw2-LambdaStack-6998hw2LF1-pGnNxHUNaND6-a79093f7-b5e4-4caf-8e2d-8a7b58698241"
-        S3ObjectVersion: ".YV4HvK44Zpr959Smvfv04b17Z2Vr5lz"
+      CodeUri: ./lambda_functions
       MemorySize: 128
       Role: !GetAtt IAMRole3.Arn
       Runtime: "python3.8"
@@ -71,10 +68,7 @@ Resources:
       Handler: "6998_hw2_LF2.lambda_handler"
       Architectures: 
       - "x86_64"
-      Code: 
-        S3Bucket: "prod-iad-c1-djusa-tasks"
-        S3Key: !Sub "/snapshots/${AWS::AccountId}/w6998-hw2-LambdaStack-6998hw2LF2-tckgbixWnTic-4a458cc6-9d63-4730-a603-467a49491604"
-        S3ObjectVersion: "_ugf2G367qZ5cgBSWtt32O_yBt563ez_"
+      CodeUri: ./lambda_functions
       MemorySize: 128
       Role: !GetAtt IAMRole2.Arn
       Runtime: "python3.8"
