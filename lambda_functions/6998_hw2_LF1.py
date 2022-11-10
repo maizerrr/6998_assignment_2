@@ -37,7 +37,7 @@ def lambda_handler(event, context):
     try:
         response = client.head_object(Bucket=bucket, Key=photo)
         logger.info("metadata retrieved from s3:\n{}".format(response))
-        labels = response["x-amz-meta-customlabels"].split(',')
+        labels = response["ResponseMetadata"]["HTTPHeaders"]["x-amz-meta-customlabels"].split(',')
         document["labels"] = labels
     except Exception as e:
         logger.error("failed to retrieve metadata from s3:\n{}".format(e))

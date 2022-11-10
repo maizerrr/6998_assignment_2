@@ -10,7 +10,7 @@ Resources:
       CodeUri: ./lambda_functions
       Description: ''
       MemorySize: 128
-      Timeout: 3
+      Timeout: 10
   6998hw2LF2:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -19,4 +19,4 @@ Resources:
       CodeUri: ./lambda_functions
       Description: ''
       MemorySize: 128
-      Timeout: 3
+      Timeout: 10
