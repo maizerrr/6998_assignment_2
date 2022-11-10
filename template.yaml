@@ -1,4 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
+Transform: 'AWS::Serverless-2016-10-31'
 Metadata:
   Generator: "former2"
 Description: ""
@@ -55,7 +56,7 @@ Resources:
       Handler: "6998_hw2_LF1.lambda_handler"
       Architectures: 
       - "x86_64"
-      CodeUri: ./lambda_functions
+      CodeUri: "./lambda_functions"
       # Code: 
       #   S3Bucket: "prod-iad-c1-djusa-tasks"
       #   S3Key: !Sub "/snapshots/${AWS::AccountId}/6998_hw2_LF1-3209636a-f21e-41e7-8ffd-ada0f0c0c8aa"
@@ -80,7 +81,7 @@ Resources:
       Handler: "6998_hw2_LF2.lambda_handler"
       Architectures: 
       - "x86_64"
-      CodeUri: ./lambda_functions
+      CodeUri: "./lambda_functions"
       # Code: 
       #   S3Bucket: "prod-iad-c1-djusa-tasks"
       #   S3Key: !Sub "/snapshots/${AWS::AccountId}/6998_hw2_LF2-a22fc531-7196-4b22-9467-b28823c279ec"
