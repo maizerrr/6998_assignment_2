@@ -1,9 +1,22 @@
-<section>
-  <link rel="stylesheet" href="./style.css">
-  <script src="./main.js"></script>
-  <h1>Speech<br> Recognition</h1>
-  <div class="container">
-    <div id="texts">
+<html>
+  <body>
+    <div>
+      <link rel="stylesheet" href="./style.css">
+      <h1>Speech<br> Recognition</h1>
+      <div class="container">
+        <div id="texts">
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+    <input id="searchbar" type="text"
+        name="search" placeholder="Type to search...">
+    <br>
+    <p>Or you can speak to search photo album</p>
+    <button id="btn1" onclick="record()">Record</button>
+    <button id="btn2" onclick="stop()" style="display: None">Stop Record</button>
+    <div id="img_wrapper">
+    </div>
+  </body>
+
+  <script src="./main.js"></script>
+</html>
