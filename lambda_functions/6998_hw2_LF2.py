@@ -47,7 +47,11 @@ def lambda_handler(event, context):
         }
 
     # cleanup query
-    query = []
+    if len(response) == 0:
+        logger.info("Lex didn't find any keyword, use original query")
+        query = [query]
+    else:
+        query = []
     for _, v in response.items():
         if v is not None and len(v["value"]["resolvedValues"]) > 0:
             query.append(v["value"]["resolvedValues"][0])
