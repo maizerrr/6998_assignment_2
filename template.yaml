@@ -136,3 +136,46 @@ Resources:
       - "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
       Description: ""
 
+  OpenSearchServiceDomain:
+    Type: "AWS::OpenSearchService::Domain"
+    DeletionPolicy: "Retain"
+    Properties:
+      DomainName: "photos"
+      EngineVersion: "OpenSearch_1.3"
+      ClusterConfig: 
+        ColdStorageOptions: 
+          Enabled: false
+        DedicatedMasterEnabled: false
+        InstanceCount: 1
+        InstanceType: "t3.small.elasticsearch"
+        ZoneAwarenessEnabled: false
+        WarmEnabled: false
+      AccessPolicies: !Sub "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"*\"},\"Action\":\"es:*\",\"Resource\":\"arn:aws:es:${AWS::Region}:${AWS::AccountId}:domain/photos/*\"}]}"
+      SnapshotOptions: {}
+      snapshot_options: {}
+      EncryptionAtRestOptions: 
+        Enabled: true
+        KmsKeyId: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/a549253c-67fb-44c9-b660-dc84015d141a"
+      NodeToNodeEncryptionOptions: 
+        Enabled: true
+      AdvancedOptions: 
+        "indices.fielddata.cache.size": "20"
+        "indices.query.bool.max_clause_count": "1024"
+        override_main_response_version: "false"
+        "rest.action.multi.allow_explicit_index": "true"
+      EBSOptions: 
+        EBSEnabled: true
+        VolumeType: "gp3"
+        VolumeSize: 10
+        Iops: 3000
+        Throughput: 125
+      CognitoOptions: 
+        Enabled: false
+      DomainEndpointOptions: 
+        EnforceHTTPS: true
+        TLSSecurityPolicy: "Policy-Min-TLS-1-0-2019-07"
+        CustomEndpointEnabled: false
+      AdvancedSecurityOptions: 
+        Enabled: true
+        InternalUserDatabaseEnabled: true
+        AnonymousAuthEnabled: false
