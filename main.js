@@ -111,8 +111,15 @@ document.getElementById("uploadButton").onclick = async function () {
   // });
 
   var myHeaders = new Headers();
-  myHeaders.append("labels", "gcp02");
-  // gap02 is self defined label
+
+  let labels = document.getElementById('customizedlabel')
+  console.log(labels.value)
+  labels = labels.value.replace(/[^a-zA-Z0-9,\s]/g, "")
+  console.log(labels);
+
+  if (labels.length != 0) {
+    myHeaders.append("labels", labels);
+  }
   myHeaders.append("Content-Type", "image/jpeg");
   myHeaders.append("x-api-key", "BcsoccsCzM87cwZS6XaxQnS1Kil8J0x2woqCDKG6");
 
@@ -166,3 +173,16 @@ function imageUploaded() {
   }
   reader.readAsDataURL(file);
 }
+
+
+// let labels = document.getElementById('customizedlabel')
+// labels.addEventListener("keypress", function(event) {
+  
+//   if (event.key === "Enter") {
+//     event.preventDefault();
+//     console.log(labels.value)
+//     cleaned_labels = labels.value.replace(/[^a-zA-Z0-9,\s]/g, "")
+//     console.log(cleaned_labels);
+
+//   }
+// });
