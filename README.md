@@ -23,3 +23,6 @@ API Gateway:
 b2photos:
  - https://bobbyhadz.com/blog/aws-s3-allow-public-read-access
  - https://stackoverflow.com/questions/50271946/get-file-metadata-from-s3-using-python-boto
+
+CloudFormation:
+ - https://former2.com/
