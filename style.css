@@ -6,7 +6,7 @@ h1 {
   margin-bottom: 10px;
   text-align: center;
 }
-input {
+#searchbar {
   color: black;
   text-align: center;
   width: 50%;
