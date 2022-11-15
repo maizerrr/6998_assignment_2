@@ -3,6 +3,8 @@ import logging
 import boto3
 from opensearchpy import OpenSearch, RequestsHttpConnection, AWSV4SignerAuth
 
+# Update test 01
+
 # AWS OpenSearch Endpoint
 URL = "search-photos-mxqtft62qu6dwx3ybgmls2i2km.us-east-1.es.amazonaws.com"
 INDEX = "photos"
