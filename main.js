@@ -1,3 +1,5 @@
+// update test 01
+
 let texts = document.getElementById("texts");
 let input = document.getElementById('searchbar')
 while (texts == null || input ==null) {
